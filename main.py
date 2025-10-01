@@ -1,14 +1,25 @@
 from typing import Union
+
+from annotated_types.test_cases import cases
 from fastapi import FastAPI
 
 app = FastAPI()
 
-
-@app.get("/")
+@app.get("/ping")
 def read_root():
-    return {"Hello": "World"}
+    return {"message": "pong"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": "q"}
+@app.get("/scans/{tool}")
+def read_item(tool: str):
+        response = ""
+        match tool:
+            case "nmap":
+                from tools.NmapWrapper import NmapWrapper as nmap
+                nmap.scan()
+                response = {"message":"nmap scan started"}
+            case "zap":
+                response = {"message": "zap"}
+            case "whois":
+                response = {"message": "whois"}
+        return response
