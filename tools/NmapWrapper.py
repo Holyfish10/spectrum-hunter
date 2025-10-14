@@ -10,3 +10,12 @@ class NmapWrapper:
         hosts_list = [(x, scanner[x]['status']['state']) for x in scanner.all_hosts()]
         print(hosts_list)
         return hosts_list
+
+    @staticmethod
+    def flags_to_arguments(flags):
+        """
+        Takes a list of flags like ['-sS', '-sV'] and returns a single argument string: '-sS -sV'
+        """
+        if isinstance(flags, list):
+            return " ".join(flags)
+        return str(flags)
